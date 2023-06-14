@@ -110,6 +110,7 @@ class ProductosController {
     
     function insertar_producto() {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            //Recoger datos  y filtrarlos
             $nombre = htmlentities($_POST['nombre']);
             $descripcion = htmlentities($_POST['descripcion']);
             $categoria = htmlentities($_POST['categoria']);
@@ -122,6 +123,7 @@ class ProductosController {
                 die();
             }
             
+            //Validar el tipo de archivo
             $img_type = exif_imagetype($_FILES['img']['tmp_name']);
             if (!$img_type || !in_array($img_type, [IMAGETYPE_JPEG, IMAGETYPE_PNG, IMAGETYPE_GIF, IMAGETYPE_WEBP])) {
                 MensajeFlash::guardarMensaje('El archivo no es una imagen');
@@ -146,7 +148,7 @@ class ProductosController {
                 header("Location: index.php?action=insertar_producto");
                 die();
             }
-            
+            //Guardar datos
             $producto = new Producto();
             $producto->setNombre($nombre);
             $producto->setDescripcion($descripcion);
@@ -169,24 +171,27 @@ class ProductosController {
     }
     
     function modificar_producto(){
+        //Recoger datos y filtrarlos
         $id = filter_var($_GET['id'], FILTER_SANITIZE_NUMBER_INT);
         $productoDAO=new ProductosDAO(ConexionBD::conectar());
         $producto= new Producto();
         $producto= $productoDAO->obtenerPorductoporId($id);
         
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {            
-            
+            //Recoger datos y filtrarlos
             $nombre=htmlentities($_POST['nombre']);
             $descripcion = htmlentities($_POST['descripcion']);
             $categoria=htmlentities($_POST['categoria']);
             $precio = htmlentities($_POST['precio']);
             
+            //Comprobaciones para la subída de la imagen
             if (!isset($_FILES['img']) || $_FILES['img']['error'] !== UPLOAD_ERR_OK) {
                 MensajeFlash::guardarMensaje('Error al cargar la imagen');
                 header("Location: index.php?action=modificar_producto&id=$id");
                 die();
             }
             
+            //Comprobación del tipo de imagen que introduce el usuario
             $img_type = exif_imagetype($_FILES['img']['tmp_name']);
             if (!$img_type || !in_array($img_type, [IMAGETYPE_JPEG, IMAGETYPE_PNG, IMAGETYPE_GIF, IMAGETYPE_WEBP])) {
                 MensajeFlash::guardarMensaje('El archivo no es una imagen');
@@ -212,6 +217,7 @@ class ProductosController {
                 die();
             }
 
+            //Guardar los datos
             $producto->setNombre($nombre);
             $producto->setDescripcion($descripcion);
             $producto->setCategoria($categoria);
