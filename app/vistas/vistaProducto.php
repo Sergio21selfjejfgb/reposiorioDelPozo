@@ -20,30 +20,31 @@
             <div class="cajaImagenyNombre">
                 <h2 id="tituloNombre"><?= $pro->getNombre() ?></h2><br>
                 <img src="web/img/<?= $pro->getImagen() ?>" alt="imagenProducto" id="imagenes"/><br>
-            </div>
-            <?php if(isset($_SESSION['email'])){   
-            $idUsuario = $_SESSION['idUsuario'];
-            $idProducto = $pro->getIdProducto();
-            $existeEnFavoritos = $productoDAO->existeEnFavoritos($idUsuario, $idProducto);
-            $existeEnCarrito = $productoDAO->existeEnCarrito($idUsuario, $idProducto);
-            ?>    
+            </div>               
             <br><br>
             <div class="cajaDatos">
-                <?php if($existeEnFavoritos){ ?>
-                    <button class="btn-favorito" data-producto-id="<?= $pro->getIdProducto() ?>"><i class="fa fa-heart" id="fav" style="color: red"></i></button>
-                <?php }else{ ?>
-                    <button class="btn-favorito" data-producto-id="<?= $pro->getIdProducto() ?>"><i class="fa fa-heart" id="fav"></i></button>
-                <?php } ?>
-                    
-                <?php if($existeEnCarrito){ ?>
-                    <button class="btn-carrito" data-producto-id="<?= $pro->getIdProducto() ?>"><i class="fa fa-shopping-cart" id="cart" style="color: blue"></i></button>                    
-                <?php }else{ ?>
-                    <button class="btn-carrito" data-producto-id="<?= $pro->getIdProducto() ?>"><i class="fa fa-shopping-cart" id="cart"></i></button>
-                <?php } ?>
+                <?php if(isset($_SESSION['email'])){   
+                    $idUsuario = $_SESSION['idUsuario'];
+                    $idProducto = $pro->getIdProducto();
+                    $existeEnFavoritos = $productoDAO->existeEnFavoritos($idUsuario, $idProducto);
+                    $existeEnCarrito = $productoDAO->existeEnCarrito($idUsuario, $idProducto);
+                ?> 
+                    <?php if($existeEnFavoritos){ ?>
+                        <button class="btn-favorito" data-producto-id="<?= $pro->getIdProducto() ?>"><i class="fa fa-heart" id="fav" style="color: red"></i></button>
+                    <?php }else{ ?>
+                        <button class="btn-favorito" data-producto-id="<?= $pro->getIdProducto() ?>"><i class="fa fa-heart" id="fav"></i></button>
+                    <?php } ?>
+
+                    <?php if($existeEnCarrito){ ?>
+                        <button class="btn-carrito" data-producto-id="<?= $pro->getIdProducto() ?>"><i class="fa fa-shopping-cart" id="cart" style="color: blue"></i></button>                    
+                    <?php }else{ ?>
+                        <button class="btn-carrito" data-producto-id="<?= $pro->getIdProducto() ?>"><i class="fa fa-shopping-cart" id="cart"></i></button>
+                    <?php } ?>
+                <?php } ?> 
                 <h3 id="precio"><?= $pro->getPrecio() ?>€</h3><br><br><br><br>
                 <h3>Descripción:<h3><h4 id="descripcion"><?= $pro->getDescripcion() ?></h4><br><br>
                         
-            <?php } ?>            
+                       
             
             </div>
             <?php endforeach; ?>
